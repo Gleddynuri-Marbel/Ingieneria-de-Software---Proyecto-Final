@@ -129,7 +129,49 @@ Login
     </div> <!-- /container -->
 {% endblock %}
 ```
+# SOLID
 
+## 1. S-Principio de Resposabilidad Única:
+  Este principio tiene como objetivo separar los comportamientos para que, si surgen errores como resultado de su cambio, no         afecten otros comportamientos no relacionados.
+```
+@app.route('/download/<upload_id>')
+def download(upload_id):
+    Posterm = Poster_C.query.filter_by(id=upload_id).first()
+    return send_file(BytesIO(Posterm.data), attachment_filename=Posterm.filename, as_attachment=True)
+
+@app.route('/ponent')
+def ponent():
+    title = "Ponentes"
+    return render_template('ponent.html', title=title)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+```
+**Formato**: <br>
+El codigo en su totalidad esta ordenado y formateado en funcion que sea legible. <br>
+
+![Open_Closed](https://github.com/ThatGust/Ingieneria-de-Software---Proyecto-Final/blob/main/image_2022-08-29_141629603.png)
+## 2. O-Principio de Abierto-Cerrado:
+  Este principio tiene como objetivo extender el comportamiento de una Clase sin cambiar el comportamiento existente de esa Clase.   Esto es para evitar causar errores dondequiera que se use la Clase.
+  Para aplicar este ejemplo todas  las clases deben descender de una clase abstracta donde se presenten todos aquellos métodos que   son la base de las respectivas clases.
+```
+{% extends "layout_2.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block title %}{{title}}{% endblock %}
+```
+## 3. L - Sustitución de Liskov:
+  Este principio tiene como objetivo hacer cumplir la coherencia para que la Clase principal o su Clase secundaria se puedan     usar de la misma manera sin errores.
+  Para aplicar este ejemplo todas  las clases que sean subtipos de una superclase , y esta misma debe incluir solo aquellos       métodos que comparten ambas subclases sin romper la lógica.
+```
+Layouts
+```
+![Open_Closed](https://github.com/ThatGust/Ingieneria-de-Software---Proyecto-Final/blob/main/Capture.PNG)
 
 
 
