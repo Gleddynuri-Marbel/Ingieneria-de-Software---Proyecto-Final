@@ -15,6 +15,33 @@ Lenguajes implementados:
 Framework:
 -Flask
 
+## Propósito del proyecto
+Como proposito del trabajo final de nuestro procceding tenemos el  de facilitar el acceso a la información de eventos relacionados a la semana de la computacion dirigido a los estudiantes universitarios. Así como incentivarlos y ayudarlos a su registro e inscripcion en concurso en el que desen participar, ademas de poder programar su horario de asistencia a las charlas de distinguidos ponenetes.
+
+
+![cs](https://noticias.uneatlantico.es/wp-content/uploads/2017/10/inforuno.jpg)
+
+## Funcionalidades
+En primer lugar se tienen wireframes de cada pestaña: Registro, Login, Ponencia, Poster, Programacion Competitiva, los cuales obtienen los datos del usuario que participan en los concursos como de los que no
+# Inicio
+Dando paso a la presentacion del trabajo final, el inicio se muestra para elegir la opcion que el ususario desee tomar 
+
+### Login
+Para login se toma los datos se usuario y del password
+
+### Register
+Para esta parte se genera un nuevo usuario con nuevo password que sera parte de la base de datos
+
+### C.Programacion
+Realiza el registro para el concurso de programacion competitiva para ser alamacenados en la base de datos 
+
+### Posters
+Realiza el registro de nuevos posters para ser alamacenados en la base de datos 
+
+### Logout
+Una vez realizado los registros se puede dar la opcion de salir con logout
+
+
 
 ## Estilos de Programación aplicados;
 1. CODE-GOLF
