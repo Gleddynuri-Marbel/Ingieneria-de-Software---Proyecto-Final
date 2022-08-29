@@ -15,74 +15,89 @@ Lenguajes implementados:
 Framework:
 -Flask
 
-Estilos de Programacion usados:
 
-1. Programación estructurada (PE)
+## Estilos de Programación aplicados;
+1. CODE-GOLF
 
-La programación estructurada esta compuesta por un conjunto de técnicas que han ido evolucionando aumentando considerablemente la productividad del programa reduciendo el tiempo de depuración y mantenimiento del mismo.
+Tan pocas líneas de código como sea posible
 
-Esta programación estructurada utiliza un número limitado de estructuras de control, reduciendo así considerablemente los errores.
+```
+@app.route('/')
+def index():
+    title = "Inicio"
+    return render_template('index.html', title=title)
 
-Esta técnica incorpora:
+```
+2. PIPELINE
 
-Diseño descendente (top-dow): el problema se descompone en etapas o estructuras jerárquicas.
-Recursos abstractos (simplicidad): consiste en descompones las acciones complejas en otras más simples capaces de ser resueltas con mayor facilidad.
-Estructuras básicas: existen tres tipos de estructuras básicas:
-Estructuras secuénciales: cada acción sigue a otra acción secuencialmente. La salida de una acción es la entrada de otra.
-Estructuras selectivas: en estas estructuras se evalúan las condiciones y en función del resultado de las mismas se realizan unas acciones u otras. Se utilizan expresiones lógicas.
-Estructuras repetitivas: son secuencias de instrucciones que se repiten un número determinado de veces.
+Problema mayor descompuesto en abstracciones funcionales. Las funciones, según las Matemáticas, son relaciones de entradas a salidas.
+Problema más grande resuelto como una canalización de aplicaciones de funciones
 
-
-2. Programación modular
-
-En la programación modular consta de varias secciones dividas de forma que interactúan a través de llamadas a procedimientos, que integran el programa en su totalidad.
-
-En la programación modular, el programa principal coordina las llamadas a los módulos secundarios y pasa los datos necesarios en forma de parámetros.
-
-A su vez cada modulo puede contener sus propios datos y llamar a otros módulos o funciones.
+```
+@app.route('/download/<upload_id>')
+def download(upload_id):
+    Posterm = Poster_C.query.filter_by(id=upload_id).first()
+    return send_file(BytesIO(Posterm.data), attachment_filename=Posterm.filename, as_attachment=True)
+```
 
 
-3. Programación funcional
 
-Se caracteriza principalmente por permitir declarar y llamar a funciones dentro de otras funciones.
+3. COOKBOOK
+Problema más grande descompuesto en abstracciones de procedimiento
+Problema más grande resuelto como una secuencia de comandos, cada uno correspondiente a un procedimiento
+
+```
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        new_user = User(username=form.username.data, email=form.email.data, institution=form.institution.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        return '<h1>Nuevo usuario registrado</h1>'
+
+    return render_template('register.html', form=form)
+```
 
 ## Buenas Practicas - Codigo Legible
 **Lenguaje**: <br>
 La documentacion, la cual se definiria mas adelante, esta en ingles. Asi para lograr un orden e impecabilidad en el proyecto. <br>
 ```
-    class User(db.Model):
+class Program(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True)
+    name = db.Column(db.String(50))
     email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(80))
     institution = db.Column(db.String(100))
+    resume = db.Column(db.String(260))
     
     
 ```
 ```
-    class LoginForm(FlaskForm):
+    class RegisterForm(FlaskForm):
+    email = StringField('email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
     username = StringField('username', validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField('password', validators=[InputRequired(), Length(min=8, max=80)])
-    remember = BooleanField('remember me')
+    institution = StringField('institution', validators=[InputRequired(), Length(max=80)])
 ```
 **Documentacion de codigo**: <br>
 Cada una de nuestras funciones esta ordenada de tal manera que esta sea facilmente entendida por terceros. A continuacion un fragmento ejemplificando el enunciado anterior. <br>
 ```
-@app.route('/contest', methods=('GET', 'POST'))
-def contest():
-    title = "Programacion"
-    if request.method == 'POST':
-      if not request.form['name'] or not request.form['email'] or not request.form['institution'] or not request.form['resume']:
-         flash('Llene todos los espacios', 'error')
-      else:
-         Progra = Program(name=request.form['name'], email=request.form['email'],
-            institution=request.form['institution'], resume=request.form['resume'])
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
 
-         db.session.add(Progra)
-         db.session.commit()
-         
-         flash('Forma enviada')
-    return render_template('contest.html', title=title)
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        new_user = User(username=form.username.data, email=form.email.data, institution=form.institution.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        return '<h1>Nuevo usuario registrado</h1>'
+
+    return render_template('register.html', form=form)
 ```
 **Modularidad**: <br>
 Cada fragmento del codigo ejerce una sola funcion; teniendo el cuenta que utilizamos el framework de Flask, la modularidad y flexibilidad es necesaria. Todo ello permite tambien a la resolucion de errores de forma sencilla, sin comprometer la integridad del resto del proyecto. <br>
