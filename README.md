@@ -156,6 +156,46 @@ Login
     </div> <!-- /container -->
 {% endblock %}
 ```
+**Indentacion Consistente**: <br>
+Vale la pena señalar que es una buena idea mantener un estilo de indentacion consistente.
+Hay más de una forma de indentar el código.
+
+```
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        new_user = User(username=form.username.data, email=form.email.data, institution=form.institution.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        return '<h1>Nuevo usuario registrado</h1>'
+
+    return render_template('register.html', form=form)
+```
+**Evite los comentarios obvios**: <br>
+Comentar el código es fantástico; sin embargo, puede ser exagerado o simplemente redundante. Toma este ejemplo:
+
+```
+@app.route('/contest', methods=('GET', 'POST'))
+def contest():
+    title = "Programacion"
+    if request.method == 'POST':
+      if not request.form['name'] or not request.form['email'] or not request.form['institution'] or not request.form['resume']: #Si no se encuentra una casilla que el proceso se detenga
+         flash('Llene todos los espacios', 'error')
+      else:
+         Progra = Program(name=request.form['name'], email=request.form['email'], #Se insertan los valores segun el form
+            institution=request.form['institution'], resume=request.form['resume'])
+
+         db.session.add(Progra) #Se ejecuta la variable insertando la data
+         db.session.commit()
+         
+         flash('Forma enviada')
+    return render_template('contest.html', title=title)
+```
+
 # SOLID
 
 ## 1. S-Principio de Resposabilidad Única:
